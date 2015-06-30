@@ -22,4 +22,12 @@ RSpec.describe TopicMetadata do
 
     expect(tm.partition_leader(0)).to eq(0)
   end
+
+  it 'determines leader for a partition after replica goes away' do
+    partition_metadata = Protocol::PartitionMetadata.new(9, 0, 0, [0], [0])
+    partitions = [partition_metadata]
+    tm = TopicMetadata.new(Protocol::TopicMetadataStruct.new(9, "topic", partitions))
+
+    expect(tm.available_partitions.count).to eq(1)
+  end
 end
